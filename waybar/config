@@ -1,0 +1,117 @@
+{
+        "layer": "top",
+        "position": "top",
+        "margin-left": 10,
+        "margin-right": 10,
+        "margin-top": 0,
+        "margin-bottom": 0,
+        "reload_style_on_change": true,
+        "modules-left": ["clock","custom/pacman","tray"],
+        "modules-center": ["hyprland/workspaces"],
+        "modules-right": ["cpu","memory","temperature","pulseaudio","custom/disk"],
+
+
+        "hyprland/workspaces": {
+            "format": "{icon}",
+            "format-icons": {
+                "active": "",
+                "default": "",
+                "empty": ""
+            },
+            "persistent-workspaces": {
+                "*": [ 1,2,3,4,5 ]
+            }
+        },
+
+        "clock": {
+            "format": "{:%I:%M:%S %p} ",
+            "interval": 1,   
+            "tooltip-format": "<tt>{calendar}</tt>",
+            "calendar": {
+                "format": {
+                    "today": "<span color='#fAfBfC'><b>{}</b></span>"
+                }
+            },
+            "actions": {
+                "on-click-right": "shift_down",
+                "on-click": "shift_up"
+            }
+        },
+        "network": {
+            "format-wifi": "WiFi {essid}",
+            "format-ethernet": "ETH {ifname}",
+            "format-disconnected": "NET OFF",
+            "tooltip-format-disconnected": "No Network Connection",
+            "tooltip-format-wifi": "{essid} ({signalStrength}%) WiFi",
+            "tooltip-format-ethernet": "{ifname} Ethernet",
+            "on-click": "kitty nmtui"
+        },
+        "custom/pacman": {
+            "format": "UPD {}",
+            "interval": 30,   
+            "exec": "checkupdates | wc -l",
+            "exec-if": "exit 0",
+            "on-click": "kitty sh -c 'yay -Syu; echo Done - Press enter to exit; read'; pkill -SIGRTMIN+8 waybar",
+            "signal": 8,
+            "tooltip": false
+        },
+        "custom/expand": {
+            "format": "",
+            "tooltip": false
+        },
+        "custom/endpoint":{
+            "format": "|",
+            "tooltip": false
+        },
+        "group/expand": {
+            "orientation": "horizontal",
+            "drawer": {
+                "transition-duration": 600,
+                "transition-to-left": true,
+                "click-to-reveal": true
+            },
+            "modules": ["custom/expand", "custom/colorpicker","cpu","memory","temperature","custom/endpoint"]
+        },
+        "custom/colorpicker": {
+            "format": "{}",
+            "return-type": "json",
+            "interval": "once",
+            "exec": "~/.config/waybar/scripts/colorpicker.sh -j",
+            "on-click": "~/.config/waybar/scripts/colorpicker.sh",
+            "signal": 1
+        },
+        "cpu": {
+            "format": "CPU {usage}%",
+            "tooltip": true,
+            "interval": 1
+        },
+        "memory": {
+            "format": "RAM {percentage}%",
+            "interval": 1
+        },
+        "temperature": {
+            "critical-threshold": 80,
+            "format": "TEMP {temperatureC}°C",
+            "interval": 1
+        },
+        "pulseaudio": {
+            "format": "VOL {volume}%",
+            "format-bluetooth": "VOL {volume}% BT",
+            "format-bluetooth-muted": "VOL MUTED BT",
+            "format-muted": "VOL MUTED",
+            "format-source": "VOL {volume}% MIC",
+            "format-source-muted": "VOL MUTED MIC",
+            "on-click": "pavucontrol",
+            "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+        },
+        "custom/disk": {
+            "format": "{}",
+            "interval": 30,
+            "exec": "~/.config/waybar/scripts/disk.sh"
+        },
+        "tray": {
+            "icon-size": 14,
+            "spacing": 10
+        }
+} 
+

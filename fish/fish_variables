@@ -1,0 +1,37 @@
+# This file contains fish universal variable definitions.
+# VERSION: 3.0
+SETUVAR WAL_COLORS:wallpaper\x3a\x20\x22/home/bruno/Pictures/wallpapers/garuda\x2ewebp\x22\x1e\x1especial\x3a\x1e\x20\x20\x20\x20background\x3a\x20\x22\x231c1511\x22\x1e\x20\x20\x20\x20foreground\x3a\x20\x22\x23e1e4ea\x22\x1e\x20\x20\x20\x20cursor\x3a\x20\x22\x23e1e4ea\x22\x1e\x1ecolors\x3a\x1e\x20\x20\x20\x20color0\x3a\x20\x22\x231c1511\x22\x1e\x20\x20\x20\x20color1\x3a\x20\x22\x23CC9850\x22\x1e\x20\x20\x20\x20color2\x3a\x20\x22\x23DBA363\x22\x1e\x20\x20\x20\x20color3\x3a\x20\x22\x237B7A87\x22\x1e\x20\x20\x20\x20color4\x3a\x20\x22\x23AB9B9E\x22\x1e\x20\x20\x20\x20color5\x3a\x20\x22\x23C8AFA1\x22\x1e\x20\x20\x20\x20color6\x3a\x20\x22\x23BFBDC4\x22\x1e\x20\x20\x20\x20color7\x3a\x20\x22\x23e1e4ea\x22\x1e\x20\x20\x20\x20color8\x3a\x20\x22\x239d9fa3\x22\x1e\x20\x20\x20\x20color9\x3a\x20\x22\x23CC9850\x22\x1e\x20\x20\x20\x20color10\x3a\x20\x22\x23DBA363\x22\x1e\x20\x20\x20\x20color11\x3a\x20\x22\x237B7A87\x22\x1e\x20\x20\x20\x20color12\x3a\x20\x22\x23AB9B9E\x22\x1e\x20\x20\x20\x20color13\x3a\x20\x22\x23C8AFA1\x22\x1e\x20\x20\x20\x20color14\x3a\x20\x22\x23BFBDC4\x22\x1e\x20\x20\x20\x20color15\x3a\x20\x22\x23e1e4ea\x22
+SETUVAR __fish_initialized:3800
+SETUVAR _fisher_jorgebucaran_2F_fisher_files:\x7e/\x2econfig/fish/functions/fisher\x2efish\x1e\x7e/\x2econfig/fish/completions/fisher\x2efish
+SETUVAR _fisher_jorgebucaran_2F_nvm_2E_fish_files:\x7e/\x2econfig/fish/functions/_nvm_index_update\x2efish\x1e\x7e/\x2econfig/fish/functions/_nvm_list\x2efish\x1e\x7e/\x2econfig/fish/functions/_nvm_version_activate\x2efish\x1e\x7e/\x2econfig/fish/functions/_nvm_version_deactivate\x2efish\x1e\x7e/\x2econfig/fish/functions/nvm\x2efish\x1e\x7e/\x2econfig/fish/conf\x2ed/nvm\x2efish\x1e\x7e/\x2econfig/fish/completions/nvm\x2efish
+SETUVAR _fisher_plugins:jorgebucaran/fisher\x1ejorgebucaran/nvm\x2efish
+SETUVAR _fisher_upgraded_to_4_4:\x1d
+SETUVAR fish_color_autosuggestion:brblack
+SETUVAR fish_color_cancel:\x2dr
+SETUVAR fish_color_command:blue
+SETUVAR fish_color_comment:red
+SETUVAR fish_color_cwd:green
+SETUVAR fish_color_cwd_root:red
+SETUVAR fish_color_end:green
+SETUVAR fish_color_error:brred
+SETUVAR fish_color_escape:brcyan
+SETUVAR fish_color_history_current:\x2d\x2dbold
+SETUVAR fish_color_host:normal
+SETUVAR fish_color_host_remote:yellow
+SETUVAR fish_color_normal:normal
+SETUVAR fish_color_operator:brcyan
+SETUVAR fish_color_param:cyan
+SETUVAR fish_color_quote:yellow
+SETUVAR fish_color_redirection:cyan\x1e\x2d\x2dbold
+SETUVAR fish_color_search_match:white\x1e\x2d\x2dbackground\x3dbrblack
+SETUVAR fish_color_selection:white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
+SETUVAR fish_color_status:red
+SETUVAR fish_color_user:brgreen
+SETUVAR fish_color_valid_path:\x2d\x2dunderline
+SETUVAR fish_key_bindings:fish_default_key_bindings
+SETUVAR fish_pager_color_completion:normal
+SETUVAR fish_pager_color_description:yellow\x1e\x2di
+SETUVAR fish_pager_color_prefix:normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
+SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
+SETUVAR fish_pager_color_selected_background:\x2dr
+SETUVAR fish_user_paths:/home/bruno/\x2elocal/bin
