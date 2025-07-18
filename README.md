@@ -1,1 +1,1 @@
-Hyprland config dotfiles
+Hyprland config on EndeavourOS dotfiles
