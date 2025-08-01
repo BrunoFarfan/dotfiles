@@ -3,6 +3,10 @@
 @define-color red  @color9;
 @define-color lavender  @color7;
 @define-color text  @color7;
+@define-color accent @color1;
+@define-color background @background;
+@define-color surface @color0;
+
 * {
     all:unset;
     font-family: 'CodeNewRoman Nerd Font Mono', monospace;
@@ -16,75 +20,122 @@
 window {
     all:unset;
     padding: 20px;
-    border-radius: 0px;
-    background-color: alpha(@background,.5);
+    border-radius: 15px;
+    background-color: alpha(@background,.95);
+    border: 2px solid alpha(@accent,.3);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
+
 #inner-box {
     margin: 2px;
-    padding: 5px;
+    padding: 10px;
     border: none;
-
+    border-radius: 10px;
 }
+
 #outer-box {    
     border: none;
+    border-radius: 10px;
 }
+
 #scroll {
     margin: 0px;
-    padding: 30px;
-    border: none;
-}
-#input {
-    all:unset;
-    margin-left:20px;
-    margin-right:20px;
-    margin-top:20px;
     padding: 20px;
     border: none;
+    border-radius: 10px;
+}
+
+#input {
+    all:unset;
+    margin: 15px 20px;
+    padding: 15px 20px;
+    border: 2px solid alpha(@accent,.4);
     outline: none;
     color: @text;
-    box-shadow: 1px 1px 5px rgba(0,0,0, .5);
-    border-radius:10;
-    background-color: alpha(@background,.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border-radius: 12px;
+    background-color: alpha(@surface,.8);
+    transition: all 0.2s ease;
 }
+
+#input:focus {
+    border: 2px solid @accent;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    background-color: alpha(@surface,.9);
+}
+
 #input image {
     border: none;
     color: @red;
-    padding-right:10px;
+    padding-right: 10px;
 }
+
 #input * {
     border: none;
     outline: none;
 }
 
-#input:focus {
-    outline: none;
-    border: none;
-
-    border-radius:10;
-}
 #text {
-    margin: 5px;
+    margin: 8px;
     border: none;
     color: @text;
     outline: none;
+    font-weight: 500;
 }
+
 #entry {
     all:unset;
-    padding: 20 0 20 45;
+    padding: 15px 20px;
+    margin: 5px 10px;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    background-color: alpha(@surface,.6);
 }
+
+#entry:hover {
+    border: 2px solid alpha(@accent,.3);
+    background-color: alpha(@surface,.8);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
 #entry arrow {
     border: none;
     color: @lavender;
+}
 
-}
 #entry:selected {
-    border: none;
-    border-radius: 20px;
-    background-color: alpha(@background,.2);
+    border: 2px solid @accent;
+    border-radius: 12px;
+    background-color: alpha(@accent,.15);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    transform: translateY(-3px);
 }
+
 #entry:selected #text {
-    color: @mauve;
+    color: @accent;
+    font-weight: 600;
 }
+
 #entry:drop(active) {
     background-color: @lavender !important;
+    border: 2px solid @lavender;
+}
+
+/* Image styling for thumbnails */
+#entry image {
+    border-radius: 8px;
+    border: 2px solid alpha(@accent,.2);
+    transition: all 0.2s ease;
+}
+
+#entry:hover image {
+    border: 2px solid alpha(@accent,.5);
+    transform: scale(1.02);
+}
+
+#entry:selected image {
+    border: 2px solid @accent;
+    transform: scale(1.05);
 }
