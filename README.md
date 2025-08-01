@@ -1,0 +1,1 @@
+Hyprland dotfiles on EndeavourOS
