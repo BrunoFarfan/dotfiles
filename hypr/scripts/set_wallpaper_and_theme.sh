@@ -17,7 +17,14 @@ hyprpaper &
 rm -rf ~/.cache/wal/schemes/
 
 wal -i "$WALLPAPER" && {
-	~/.cache/wal/convert_colors.sh
+	# run script to convert colors into .conf file for hyprland.conf
+	~/dotfiles/hypr/scripts/convert_colors.sh
+	
+	# restart waybar
 	pkill waybar
 	waybar &
+
+	# restart swaync
+	pkill swaync
+	swaync &
 } &
