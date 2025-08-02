@@ -6,6 +6,29 @@ CACHE_DIR="$HOME/.cache/wallpaper-selector"
 THUMBNAIL_WIDTH="250"  # Size of thumbnails in pixels (16:9)
 THUMBNAIL_HEIGHT="141"
 
+# Parse command line arguments
+SHUFFLE_MODE=false
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --shuffle|-s)
+            SHUFFLE_MODE=true
+            shift
+            ;;
+        --help|-h)
+            echo "Usage: $0 [OPTIONS]"
+            echo "Options:"
+            echo "  --shuffle, -s    Bypass interactive mode and select random wallpaper"
+            echo "  --help, -h       Show this help message"
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
+
 # Create cache directory if it doesn't exist
 mkdir -p "$CACHE_DIR"
 
@@ -49,45 +72,92 @@ generate_menu() {
     done
 }
 
-# Use wofi to display grid of wallpapers
-selected=$(generate_menu | wofi --show dmenu \
-    --cache-file /dev/null \
-    --define "image-size=${THUMBNAIL_WIDTH}x${THUMBNAIL_HEIGHT}" \
-    --columns 3 \
-    --allow-images \
-    --insensitive \
-    --sort-order=default \
-    --prompt "Select Wallpaper" \
-    --conf ~/.config/wofi/wallpaper.conf \
-    --style ~/.config/wofi/style-wallpaper.css \
-  )
-
-# Set wallpaper if one was selected
-if [ -n "$selected" ]; then
-    # Remove the img: prefix to get the cached thumbnail path
-    thumbnail_path="${selected#img:}"
-
-    # Check if random wallpaper was selected
-    if [[ "$thumbnail_path" == "$SHUFFLE_ICON" ]]; then
-        # Select a random wallpaper from the directory, excluding shuffle.png
-        original_path=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) ! -name "shuffle.png" | shuf -n 1)
-    else
-        # Get the original filename from the thumbnail path
-        original_filename=$(basename "${thumbnail_path%.*}")
-
-        # Find the corresponding original file in the wallpaper directory
-        original_path=$(find "$WALLPAPER_DIR" -type f -name "${original_filename}.*" | head -n1)
+# Handle shuffle mode or interactive selection
+if [[ "$SHUFFLE_MODE" == "true" ]]; then
+    # Shuffle mode: directly select a random wallpaper
+    # Get current wallpaper if it exists
+    current_wallpaper=""
+    if [[ -f "$HOME/.cache/current_wallpaper" ]]; then
+        current_wallpaper=$(cat "$HOME/.cache/current_wallpaper")
     fi
+    
+    # Select a random wallpaper from the directory, excluding shuffle.png and current wallpaper
+    if [[ -n "$current_wallpaper" ]]; then
+        # Exclude current wallpaper from random selection
+        original_path=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) ! -name "shuffle.png" ! -path "$current_wallpaper" | shuf -n 1)
+    else
+        # No current wallpaper, just exclude shuffle.png
+        original_path=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) ! -name "shuffle.png" | shuf -n 1)
+    fi
+    
+    # Check if a wallpaper was found
+    if [[ -z "$original_path" ]]; then
+        echo "No wallpapers found in $WALLPAPER_DIR"
+        exit 1
+    fi
+    
+    echo "Selected random wallpaper: $(basename "$original_path")"
+else
+    # Interactive mode: use wofi to display grid of wallpapers
+    selected=$(generate_menu | wofi --show dmenu \
+        --cache-file /dev/null \
+        --define "image-size=${THUMBNAIL_WIDTH}x${THUMBNAIL_HEIGHT}" \
+        --columns 3 \
+        --allow-images \
+        --insensitive \
+        --sort-order=default \
+        --prompt "Select Wallpaper" \
+        --conf ~/.config/wofi/wallpaper.conf \
+        --style ~/.config/wofi/style-wallpaper.css \
+      )
 
-    # Ensure a valid wallpaper was found before proceeding
-    if [ -n "$original_path" ]; then
-        # Set wallpaper using hyprpaper
-        echo "preload = $original_path" > "$HOME/.config/hypr/hyprpaper.conf"
-        echo "wallpaper = HDMI-A-1,$original_path" >> "$HOME/.config/hypr/hyprpaper.conf"
+    # Set wallpaper if one was selected
+    if [ -n "$selected" ]; then
+        # Remove the img: prefix to get the cached thumbnail path
+        thumbnail_path="${selected#img:}"
 
-        # Restart hyprpaper
-        pkill hyprpaper
-        hyprpaper &
+        # Check if random wallpaper was selected
+        if [[ "$thumbnail_path" == "$SHUFFLE_ICON" ]]; then
+            # Get current wallpaper if it exists
+            current_wallpaper=""
+            if [[ -f "$HOME/.cache/current_wallpaper" ]]; then
+                current_wallpaper=$(cat "$HOME/.cache/current_wallpaper")
+            fi
+            
+            # Select a random wallpaper from the directory, excluding shuffle.png and current wallpaper
+            if [[ -n "$current_wallpaper" ]]; then
+                # Exclude current wallpaper from random selection
+                original_path=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) ! -name "shuffle.png" ! -path "$current_wallpaper" | shuf -n 1)
+            else
+                # No current wallpaper, just exclude shuffle.png
+                original_path=$(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) ! -name "shuffle.png" | shuf -n 1)
+            fi
+        else
+            # Get the original filename from the thumbnail path
+            original_filename=$(basename "${thumbnail_path%.*}")
+
+            # Find the corresponding original file in the wallpaper directory
+            original_path=$(find "$WALLPAPER_DIR" -type f -name "${original_filename}.*" | head -n1)
+        fi
+    fi
+fi
+
+# Set wallpaper if one was selected or found
+if [ -n "$original_path" ]; then
+        # Start swww daemon if not already running (suppress error if already running)
+        if ! pgrep -x "swww" > /dev/null; then
+            swww-daemon > /dev/null 2>&1 &
+            sleep 0.1
+        fi
+        
+        # Set wallpaper using swww with transition animation
+        swww img "$original_path" \
+            --transition-type any \
+            --transition-step 90 \
+            --transition-fps 60 \
+            --transition-duration 2 \
+            --transition-angle 30 \
+            --transition-pos 0.854,0.977
 
         # Clear wal cache and apply theme
         rm -rf ~/.cache/wal/schemes/
@@ -110,7 +180,7 @@ if [ -n "$selected" ]; then
 
         # Optional: Notify user
         notify-send "Wallpaper" "Wallpaper has been updated" -i "$original_path"
-    else
+    el
         notify-send "Wallpaper Error" "Could not find the original wallpaper file."
     fi
 fi

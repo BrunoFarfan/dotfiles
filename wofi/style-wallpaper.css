@@ -14,7 +14,7 @@
     outline: none;
     border: none;
     text-shadow:none;
-    background-color:transparent;
+    background-color:alpha(@surface,.2);
 }
 
 window {
